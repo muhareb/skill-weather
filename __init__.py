@@ -27,7 +27,7 @@ from mycroft.messagebus.message import Message
 from mycroft.util.format import nice_time
 from mycroft.util.log import LOG
 from mycroft.util.parse import extract_datetime
-from mycroft.util.format import nice_number
+from mycroft.util.format import nice_number, pronounce_number
 from pyowm import OWM
 from pyowm.webapi25.forecaster import Forecaster
 from pyowm.webapi25.forecastparser import ForecastParser
@@ -120,7 +120,6 @@ class OWMApi(Api):
         if (len(lang)==2):
             if lang[1] in owmsupported:
                 owmlang = lang[1]
-        ownlang = "en"
         return owmlang
 
 
@@ -401,7 +400,7 @@ class WeatherSkill(MycroftSkill):
                 )
 
             report['condition'] = condition
-            report['temp'] = self.__get_temperature(currentWeather, 'temp')
+            report['temp'] = pronounce_number(int(self.__get_temperature(currentWeather, 'temp')), self.lang)
             report['icon'] = currentWeather.get_weather_icon_name()
 
             # Get forecast for the day
@@ -413,8 +412,8 @@ class WeatherSkill(MycroftSkill):
                 report['full_location'],
                 report['lat'],
                 report['lon'])
-            report['temp_min'] = self.__get_temperature(forecastWeather, 'min')
-            report['temp_max'] = self.__get_temperature(forecastWeather, 'max')
+            report['temp_min'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'min')),self.lang)
+            report['temp_max'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'max')),self.lang)
             report['humidity'] = forecastWeather.get_humidity()
 
             wind = self.get_wind_speed(forecastWeather)
@@ -649,8 +648,8 @@ class WeatherSkill(MycroftSkill):
                 )
 
             report['condition'] = condition
-            report['temp'] = self.__get_temperature(currentWeather, 'temp',
-                                                    unit)
+            report['temp'] = pronounce_number(int(self.__get_temperature(currentWeather, 'temp',
+                                                    unit)),self.lang)
             report['icon'] = currentWeather.get_weather_icon_name()
 
             # Get forecast for the day
@@ -662,10 +661,10 @@ class WeatherSkill(MycroftSkill):
                 report['full_location'],
                 report['lat'],
                 report['lon'])
-            report['temp_min'] = self.__get_temperature(forecastWeather, 'min',
-                                                        unit)
-            report['temp_max'] = self.__get_temperature(forecastWeather, 'max',
-                                                        unit)
+            report['temp_min'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'min',
+                                                        unit)),self.lang)
+            report['temp_max'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'max',
+                                                        unit)),self.lang)
             report['humidity'] = forecastWeather.get_humidity()
 
             wind = self.get_wind_speed(forecastWeather)
@@ -704,8 +703,8 @@ class WeatherSkill(MycroftSkill):
                 )
 
             report['condition'] = condition
-            report['temp'] = self.__get_temperature(currentWeather, 'temp',
-                                                    unit)
+            report['temp'] = pronounce_number(int(self.__get_temperature(currentWeather, 'temp',
+                                                    unit)),self.lang)
             report['icon'] = currentWeather.get_weather_icon_name()
 
             # Get forecast for the day
@@ -717,26 +716,11 @@ class WeatherSkill(MycroftSkill):
                 report['full_location'],
                 report['lat'],
                 report['lon'])
-            report['temp_min'] = self.__get_temperature(forecastWeather, 'min',
-                                                        unit)
-            report['temp_max'] = self.__get_temperature(forecastWeather, 'max',
-                                                        unit)
+            report['temp_min'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'min',
+                                                        unit)),self.lang)
+            report['temp_max'] = pronounce_number(int(self.__get_temperature(forecastWeather, 'max',
+                                                        unit)),self.lang)
             report['humidity'] = forecastWeather.get_humidity()
-
-            if report['location']=='london, gb':
-                report['location'] = 'لندن'
-            elif report['location']=='cairo, eg':
-                report['location'] = 'القاهرة'
-            elif report['location']=='dubai, ae':
-                report['location'] = 'دبي'
-            elif report['location']=='riyadh, sa':
-                report['location'] = 'الرياض'
-            elif report['location']=='jeddah, sa':
-                report['location'] = 'جده'
-            elif report['location']=='Washington, US':
-                report['location'] = 'واشنطن'
-            elif report['location']=='mecca, sa':
-                report['location'] = 'مكه'
 
             wind = self.get_wind_speed(forecastWeather)
             report['wind'] = "{} {}".format(wind[0], wind[1] or "")
@@ -765,29 +749,13 @@ class WeatherSkill(MycroftSkill):
             return None # No forecast available
 
         # Can get temps for 'min', 'max', 'eve', 'morn', 'night', 'day'
-        report['temp'] = self.__get_temperature(forecast_weather, 'day', unit)
-        report['temp_min'] = self.__get_temperature(forecast_weather, 'min',
-                                                    unit)
-        report['temp_max'] = self.__get_temperature(forecast_weather, 'max',
-                                                    unit)
+        report['temp'] = pronounce_number(int(self.__get_temperature(forecast_weather, 'day', unit)),self.lang)
+        report['temp_min'] = pronounce_number(int(self.__get_temperature(forecast_weather, 'min',
+                                                    unit)),self.lang)
+        report['temp_max'] = pronounce_number(int(self.__get_temperature(forecast_weather, 'max',
+                                                    unit)),self.lang)
         report['icon'] = forecast_weather.get_weather_icon_name()
         report['humidity'] = forecast_weather.get_humidity()
-
-        if report['location']=='london, gb':
-           report['location'] = 'لندن'
-        elif report['location']=='cairo, eg':
-           report['location'] = 'القاهرة'
-        elif report['location']=='dubai, ae':
-           report['location'] = 'دبي'
-        elif report['location']=='riyadh, sa':
-           report['location'] = 'الرياض'
-        elif report['location']=='jeddah, sa':
-           report['location'] = 'جده'
-        elif report['location']=='Washington, US':
-           report['location'] = 'واشنطن'
-        elif report['location']=='mecca, sa':
-           report['location'] = 'مكه'
-
         """report['wind'] = self.get_wind_speed(forecast_weather)[0]"""
 
         # TODO: Run off of status IDs instead of the status text? This converts a status like "sky is clear" to
@@ -1087,21 +1055,6 @@ class WeatherSkill(MycroftSkill):
         """
         try:
             location = message.data.get("Location", None) if message else None
-            if location == 'لندن':
-                location = 'london, gb'
-            elif location == 'القاهره':
-                location = 'cairo, eg'
-            elif location == 'دبي':
-                location = 'dubai, ae'
-            elif location == 'الرياض':
-                location = 'riyadh, sa'
-            elif location == 'جده':
-                location = 'jeddah, sa'
-            elif location == 'واشنطن':
-                location = 'Washington, US'
-            elif location == 'مكه':
-                location = 'mecca, sa'
-        
             if location:
                 return None, None, location, location
 
@@ -1150,23 +1103,6 @@ class WeatherSkill(MycroftSkill):
                                      will be output if True (default: False)
         """
 
-
-        if report['location']=='london, gb':
-           report['location'] = 'لندن'
-        elif report['location']=='cairo, eg':
-           report['location'] = 'القاهرة'
-        elif report['location']=='dubai, ae':
-           report['location'] = 'دبي'
-        elif report['location']=='riyadh, sa':
-           report['location'] = 'الرياض'
-        elif report['location']=='jeddah, sa':
-           report['location'] = 'جده'
-        elif report['location']=='Washington, US':
-           report['location'] = 'واشنطن'
-        elif report['location']=='mecca, sa':
-           report['location'] = 'مكه'
-
-         
         # Convert code to matching weather icon on Mark 1
         if report['location']:
             report['location'] = self.owm.location_translations.get(report['location'], report['location'])

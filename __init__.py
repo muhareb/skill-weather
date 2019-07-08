@@ -722,6 +722,21 @@ class WeatherSkill(MycroftSkill):
                                                         unit)),self.lang)
             report['humidity'] = forecastWeather.get_humidity()
 
+            if report['location']=='london, gb':
+                report['location'] = 'لندن'
+            elif report['location']=='cairo, eg':
+                report['location'] = 'القاهرة'
+            elif report['location']=='dubai, ae':
+                report['location'] = 'دبي'
+            elif report['location']=='riyadh, sa':
+                report['location'] = 'الرياض'
+            elif report['location']=='jeddah, sa':
+                report['location'] = 'جده'
+            elif report['location']=='Washington, US':
+                report['location'] = 'واشنطن'
+            elif report['location']=='mecca, sa':
+                report['location'] = 'مكه'
+
             wind = self.get_wind_speed(forecastWeather)
             report['wind'] = "{} {}".format(wind[0], wind[1] or "")
             return report
@@ -756,6 +771,21 @@ class WeatherSkill(MycroftSkill):
                                                     unit)),self.lang)
         report['icon'] = forecast_weather.get_weather_icon_name()
         report['humidity'] = forecast_weather.get_humidity()
+
+        if report['location']=='london, gb':
+           report['location'] = 'لندن'
+        elif report['location']=='cairo, eg':
+           report['location'] = 'القاهرة'
+        elif report['location']=='dubai, ae':
+           report['location'] = 'دبي'
+        elif report['location']=='riyadh, sa':
+           report['location'] = 'الرياض'
+        elif report['location']=='jeddah, sa':
+           report['location'] = 'جده'
+        elif report['location']=='Washington, US':
+           report['location'] = 'واشنطن'
+        elif report['location']=='mecca, sa':
+           report['location'] = 'مكه'
         """report['wind'] = self.get_wind_speed(forecast_weather)[0]"""
 
         # TODO: Run off of status IDs instead of the status text? This converts a status like "sky is clear" to
@@ -1055,6 +1085,21 @@ class WeatherSkill(MycroftSkill):
         """
         try:
             location = message.data.get("Location", None) if message else None
+            if location == 'لندن':
+                location = 'london, gb'
+            elif location == 'القاهره':
+                location = 'cairo, eg'
+            elif location == 'دبي':
+                location = 'dubai, ae'
+            elif location == 'الرياض':
+                location = 'riyadh, sa'
+            elif location == 'جده':
+                location = 'jeddah, sa'
+            elif location == 'واشنطن':
+                location = 'Washington, US'
+            elif location == 'مكه':
+                location = 'mecca, sa'
+
             if location:
                 return None, None, location, location
 
@@ -1102,6 +1147,20 @@ class WeatherSkill(MycroftSkill):
             separate_min_max (bool): a separate dialog for min max temperatures
                                      will be output if True (default: False)
         """
+        if report['location']=='london, gb':
+           report['location'] = 'لندن'
+        elif report['location']=='cairo, eg':
+           report['location'] = 'القاهرة'
+        elif report['location']=='dubai, ae':
+           report['location'] = 'دبي'
+        elif report['location']=='riyadh, sa':
+           report['location'] = 'الرياض'
+        elif report['location']=='jeddah, sa':
+           report['location'] = 'جده'
+        elif report['location']=='Washington, US':
+           report['location'] = 'واشنطن'
+        elif report['location']=='mecca, sa':
+           report['location'] = 'مكه'
 
         # Convert code to matching weather icon on Mark 1
         if report['location']:

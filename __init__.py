@@ -515,6 +515,7 @@ class WeatherSkill(MycroftSkill):
             dialog.append('light')
         dialog.append('wind')
         dialog = '.'.join(dialog)
+        report['wind'] = pronounce_number(int(report['wind']), self.lang)
         self.speak_dialog(dialog, report)
 
     @intent_handler(IntentBuilder("").require("ConfirmQuery").one_of(

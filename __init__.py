@@ -356,9 +356,9 @@ class WeatherSkill(MycroftSkill):
         print(self.location)
         try:
             report = self.__initialize_report(message)
-            when, _ = extract_datetime('الجمعه الجايه', lang='ar-sa')
+            when, _, _= extract_datetime('الجمعه الجايه', lang='ar-sa')
             self.report_forecast(report, when)
-            when, _ = extract_datetime('السبت الجاي', lang='ar-sa')
+            when, _, _ = extract_datetime('السبت الجاي', lang='ar-sa')
             self.report_forecast(report, when)
 
             print(self.location)
@@ -380,7 +380,7 @@ class WeatherSkill(MycroftSkill):
         try:
             # Get a date from requests like "weather for next Tuesday"
             today = extract_datetime(" ")[0]
-            when, _ = extract_datetime(
+            when, _, _= extract_datetime(
                         message.data.get('utterance'), lang=self.lang)
             if today != when:
                 LOG.info("Doing a forecast" + str(today) + " " + str(when))
@@ -627,7 +627,7 @@ class WeatherSkill(MycroftSkill):
             unit = self.__get_requested_unit(message)
             # Get a date from requests like "weather for next Tuesday"
             today = extract_datetime(" ")[0]
-            when, _ = extract_datetime(
+            when, _, _ = extract_datetime(
                         message.data.get('utterance'), lang=self.lang)
 
             report = self.__initialize_report(message)
@@ -683,7 +683,7 @@ class WeatherSkill(MycroftSkill):
             unit = self.__get_requested_unit(message)
             # Get a date from requests like "weather for next Tuesday"
             today = extract_datetime(" ")[0]
-            when, _ = extract_datetime(
+            when, _,_ = extract_datetime(
                         message.data.get('utterance'), lang=self.lang)
 
             report = self.__initialize_report(message)
